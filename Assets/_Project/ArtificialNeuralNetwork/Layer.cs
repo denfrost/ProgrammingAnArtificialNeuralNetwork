@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 public class Layer
 {
-    private int numberOfNeurons;
+    public int NeuronsCount { get; private set; }
     private List<Neuron> neurons = new List<Neuron>();
 
-    public Layer (int numberOfNeurons, int numberOfNeuronInputs)
+    public Layer (int neuronsCount, int neuronInputsCount)
     {
-        this.numberOfNeurons = numberOfNeurons;
-        for (var i = 0; i < numberOfNeurons; i++)
+        NeuronsCount = neuronsCount;
+        for (var i = 0; i < neuronsCount; i++)
         {
-            neurons.Add(new Neuron(numberOfNeuronInputs));
+            neurons.Add(new Neuron(neuronInputsCount));
         }
     }
 }
