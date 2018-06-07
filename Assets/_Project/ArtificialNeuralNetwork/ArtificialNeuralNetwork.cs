@@ -73,6 +73,7 @@ public class ArtificialNeuralNetwork : MonoBehaviour
             // Layer is not input layer.
             if (i > 0)
             {
+                // Takes the outputs from the previous layer.
                 inputs = new List<double>(outputs);
             }
             outputs.Clear();
@@ -94,8 +95,16 @@ public class ArtificialNeuralNetwork : MonoBehaviour
                 }
 
                 dotProduct -= layers[i].Neurons[j].Bias;
-
+                layers[i].Neurons[j].Output = ActivationFunction(dotProduct);
+                // Serves as the input for the next layer.
+                outputs.Add(layers[i].Neurons[j].Output);
             }
         }
+    }
+
+    private double ActivationFunction (double dotProduct)
+    {
+        //TODO: Implementation.
+        throw new System.NotImplementedException();
     }
 }
