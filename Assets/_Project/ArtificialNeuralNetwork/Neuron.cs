@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class Neuron 
 {
-    #region FIELDS
-    private readonly int numberOfInputs;
-    private readonly double bias;
-    private readonly double errorGradient;
-    private readonly double desiredOutput;
+    #region PROPERTIES
+    public int InputsCount { get; private set; }
+    public double Bias { get; private set; }
+    public double Output { get; set; }
 
-    List<double> weights = new List<double>();
-    List<double> inputs = new List<double>();
+    public List<double> Inputs { get; private set; } = new List<double>(); 
+    public List<double> Weights { get; private set; } = new List<double>();
+    #endregion
+
+    #region FIELDS
+    private readonly double errorGradient;
+
     #endregion
     
     #region CONSTRUCTORS
     public Neuron (int numberOfInputs)
     {
-        bias = Random.Range(-1f, 1f);
-        this.numberOfInputs = numberOfInputs;
+        Bias = Random.Range(-1f, 1f);
+        InputsCount = numberOfInputs;
         for (var i = 0; i < numberOfInputs; i++)
         {
-            weights.Add(Random.Range(-1f, 1f));
+            Weights.Add(Random.Range(-1f, 1f));
         }
     } 
     #endregion
