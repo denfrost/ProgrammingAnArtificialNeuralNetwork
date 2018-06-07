@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -56,6 +57,7 @@ public class ArtificialNeuralNetwork : MonoBehaviour
 		
 	}
 
+    // Run through NN in order to get an output.
     public List<double> Go (List<double> inputValues, List<double> desiredOutputs)
     {
         List<double> inputs = new List<double>();
@@ -67,38 +69,51 @@ public class ArtificialNeuralNetwork : MonoBehaviour
         }
 
         inputs = new List<double>(inputValues);
+
         // Loop through all layers (input layer + hidden layers + output layer).
-        for (var i = 0; i < hiddenLayersCount + 1; i++) //TODO: replace i with currentLayer?
+        for (var currentLayer = 0; currentLayer < hiddenLayersCount + 1; currentLayer++) //TODO: replace i with currentLayer?
         {
             // Layer is not input layer.
-            if (i > 0)
+            if (currentLayer > 0)
             {
                 // Takes the outputs from the previous layer.
                 inputs = new List<double>(outputs);
             }
             outputs.Clear();
 
-            // Loop through the number of neurons.
-            for (var j = 0; j < layers[i].NeuronsCount; j++) //TODO: replace j with currentNeuron?
+            // Loop through all neurons in that layer.
+            for (var currentNeuron = 0; currentNeuron < layers[currentLayer].NeuronsCount; currentNeuron++) //TODO: replace j with currentNeuron?
             {
                 double dotProduct = 0;
-                layers[i].Neurons[j].Inputs.Clear();
+                layers[currentLayer].Neurons[currentNeuron].Inputs.Clear();
 
-                // Loop through the number of the neuron's inputs.
-                for (var k = 0; k < layers[i].Neurons[j].InputsCount; k++) //TODO: replace k with currentInput?
+                // Loop through all inputs of the neuron.
+                for (var currentInput = 0; currentInput < layers[currentLayer].Neurons[currentNeuron].InputsCount; currentInput++) //TODO: replace k with currentInput?
                 {
                     // For each neuron's input, add in the input from the one before. 
-                    layers[i].Neurons[j].Inputs.Add(inputs[k]);
+                    layers[currentLayer].Neurons[currentNeuron].Inputs.Add(inputs[currentInput]);
 
                     // Dotproduct.
-                    dotProduct += layers[i].Neurons[j].Weights[k] * inputs[k];
+                    dotProduct += layers[currentLayer].Neurons[currentNeuron].Weights[currentInput] * inputs[currentInput];
                 }
 
-                dotProduct -= layers[i].Neurons[j].Bias;
-                layers[i].Neurons[j].Output = ActivationFunction(dotProduct);
+                dotProduct -= layers[currentLayer].Neurons[currentNeuron].Bias;
+                layers[currentLayer].Neurons[currentNeuron].Output = ActivationFunction(dotProduct);
                 // Serves as the input for the next layer.
-                outputs.Add(layers[i].Neurons[j].Output);
+                outputs.Add(layers[currentLayer].Neurons[currentNeuron].Output);
             }
+        }
+        UpdateWeights(outputs, desiredOutputs);
+        return outputs;
+    }
+
+    private void UpdateWeights (List<double> outputs, List<double> desiredOutputs)
+    {
+        double error;
+
+        for ()
+        {
+
         }
     }
 
