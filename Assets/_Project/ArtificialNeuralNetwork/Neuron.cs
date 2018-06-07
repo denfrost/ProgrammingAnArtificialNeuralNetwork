@@ -5,10 +5,10 @@ using UnityEngine;
 public class Neuron 
 {
     #region FIELDS
-    int numberOfInputs;
-    double bias;
-    double desiredOutput;
-    double errorGradient;
+    private readonly int numberOfInputs;
+    private readonly double bias;
+    private readonly double errorGradient;
+    private readonly double desiredOutput;
 
     List<double> weights = new List<double>();
     List<double> inputs = new List<double>();
