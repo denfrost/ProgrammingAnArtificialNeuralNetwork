@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArtificialNeuralNetwork : MonoBehaviour 
+public class ArtificialNeuralNetwork 
 {
     private readonly int inputsCount;
     private readonly int outputsCount;
