@@ -9,7 +9,10 @@ public class ArtificialNeuralNetwork
     private readonly int outputsCount;
     private readonly int hiddenLayersCount;
     private readonly int neuronsPerHiddenLayer;
-    private readonly double alpha; // The learning rate. A percentage of the training set that is integrated each time it learns (weights are adjusted).
+    // The learning rate. A percentage of the training set that is integrated each time it learns (weights are adjusted).
+    // The higher the value, the quicker the NN will run, but it will also introduce issues.
+    // Should be kept between 0 and 1.
+    private readonly double alpha; 
 
     private readonly List<Layer> layers = new List<Layer>();
 
