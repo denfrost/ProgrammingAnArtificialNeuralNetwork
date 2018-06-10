@@ -6,8 +6,9 @@ public class Neuron
 {
     #region PROPERTIES
     public int InputsCount { get; private set; }
-    public double Bias { get; private set; }
+    public double Bias { get; set; }
     public double Output { get; set; }
+    // The amount of error to that particular Neuron and weight.
     public double ErrorGradient { get; set; }
 
     public List<double> Inputs { get; private set; } = new List<double>(); 
