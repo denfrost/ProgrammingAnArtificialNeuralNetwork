@@ -17,8 +17,8 @@ public class Brain : MonoBehaviour
 
         List<double> results;
 
-        var epochs = 5000;
-        var desiredOutput = 0;
+        var epochs = 100000;
+        double desiredOutput = 0d;
 
         for (var i = 0; i < epochs; i++)
         {
@@ -27,19 +27,19 @@ public class Brain : MonoBehaviour
             // Training set for an XOR operator.
             desiredOutput = 0;
             results = Train(1, 1, desiredOutput);
-            sumSquareError += Mathf.Pow((float)results[0] - desiredOutput, 2);
+            sumSquareError += Mathf.Pow((float)results[0] - (float)desiredOutput, 2);
 
             desiredOutput = 1;
             results = Train(1, 0, desiredOutput);
-            sumSquareError += Mathf.Pow((float)results[0] - desiredOutput, 2);
+            sumSquareError += Mathf.Pow((float)results[0] - (float)desiredOutput, 2);
 
             desiredOutput = 1;
             results = Train(0, 1, desiredOutput);
-            sumSquareError += Mathf.Pow((float)results[0] - desiredOutput, 2);
+            sumSquareError += Mathf.Pow((float)results[0] - (float)desiredOutput, 2);
 
             desiredOutput = 0;
             results = Train(0, 0, desiredOutput);
-            sumSquareError += Mathf.Pow((float)results[0] - desiredOutput, 2);
+            sumSquareError += Mathf.Pow((float)results[0] - (float)desiredOutput, 2);
 
             // Training set for an XNOR operator:
             // Switch all desiredOutput values of the XOR training set
@@ -49,38 +49,39 @@ public class Brain : MonoBehaviour
 
         // Run training set again.
         // Side-effect: updates weights as well inside GO().
+        // XOR training set.
 
         double input1 = 1;
         double input2 = 1;
         desiredOutput = 0;
         results = Train(input1, input2, desiredOutput);
         Debug.LogFormat("{0}, {1}, {2} (Input values)", input1, input2, desiredOutput);
-        Debug.LogFormat("{0}, {1}, {2} (Output value rounded)\n", input1, input2, Mathf.Round((float)results[0]));
-        Debug.LogFormat("{0}, {1}, {2} (Output value)", input1, input2, results[0]);
+        Debug.LogFormat("{0}, {1}, {2} (Output value rounded)", input1, input2, Mathf.Round((float)results[0]));
+        Debug.LogFormat("{0}, {1}, {2} (Output value)\n", input1, input2, results[0]);
 
         input1 = 1;
         input2 = 0;
         desiredOutput = 1;
         results = Train(input1, input2, desiredOutput);
         Debug.LogFormat("{0}, {1}, {2} (Input values)", input1, input2, desiredOutput);
-        Debug.LogFormat("{0}, {1}, {2} (Output value rounded)\n", input1, input2, Mathf.Round((float)results[0]));
-        Debug.LogFormat("{0}, {1}, {2} (Output value)", input1, input2, results[0]);
+        Debug.LogFormat("{0}, {1}, {2} (Output value rounded)", input1, input2, Mathf.Round((float)results[0]));
+        Debug.LogFormat("{0}, {1}, {2} (Output value)\n", input1, input2, results[0]);
 
         input1 = 0;
         input2 = 1;
         desiredOutput = 1;
         results = Train(input1, input2, desiredOutput);
         Debug.LogFormat("{0}, {1}, {2} (Input values)", input1, input2, desiredOutput);
-        Debug.LogFormat("{0}, {1}, {2} (Output value rounded)\n", input1, input2, Mathf.Round((float)results[0]));
-        Debug.LogFormat("{0}, {1}, {2} (Output value)", input1, input2, results[0]);
+        Debug.LogFormat("{0}, {1}, {2} (Output value rounded)", input1, input2, Mathf.Round((float)results[0]));
+        Debug.LogFormat("{0}, {1}, {2} (Output value)\n", input1, input2, results[0]);
 
         input1 = 0;
         input2 = 0;
         desiredOutput = 0;
         results = Train(input1, input2, desiredOutput);
         Debug.LogFormat("{0}, {1}, {2} (Input values)", input1, input2, desiredOutput);
-        Debug.LogFormat("{0}, {1}, {2} (Output value rounded)\n", input1, input2, Mathf.Round((float)results[0]));
-        Debug.LogFormat("{0}, {1}, {2} (Output value)", input1, input2, results[0]);
+        Debug.LogFormat("{0}, {1}, {2} (Output value rounded)", input1, input2, Mathf.Round((float)results[0]));
+        Debug.LogFormat("{0}, {1}, {2} (Output value)\n", input1, input2, results[0]);
     }
 
     private List<double> Train(double input1, double input2, double desiredOutput)
