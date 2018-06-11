@@ -235,5 +235,20 @@ public class ArtificialNeuralNetwork
             return value;
         }
     }
+
+    private double Sinusoid (double value)
+    {
+        return System.Math.Sin(value);
+    }
+
+    private double ArcTan (double value)
+    {
+        return System.Math.Atan(value);
+    }
+
+    private double SoftSign (double value)
+    {
+        return value / (1 + System.Math.Abs(value));
+    }
     #endregion
 }
