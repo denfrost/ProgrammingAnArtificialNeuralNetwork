@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//TODO: Decide between using i, j, k and more meaningful variables
 // in nested for loops of Go() and UpdateWeights().
 public class ArtificialNeuralNetwork 
 {
@@ -50,18 +48,6 @@ public class ArtificialNeuralNetwork
     } 
     #endregion
 
-    // Use this for initialization
-    private void Start () 
-	{
-		
-	}
-	
-	// Update is called once per frame
-	private void Update () 
-	{
-		
-	}
-
     // Run through NN in order to get an output.
     public List<double> Go (List<double> inputValues, List<double> desiredOutputs)
     {
@@ -76,10 +62,10 @@ public class ArtificialNeuralNetwork
         inputs = new List<double>(inputValues);
 
         // Loop through all layers (input layer + hidden layers + output layer).
-        for (var currentLayer = 0; currentLayer < hiddenLayersCount + 1; currentLayer++) //TODO: replace i with currentLayer?
+        for (var i = 0; i < hiddenLayersCount + 1; i++)
         {
             // Layer is not input layer.
-            if (currentLayer > 0)
+            if (i > 0)
             {
                 // Takes the outputs from the previous layer.
                 inputs = new List<double>(outputs);
@@ -87,35 +73,34 @@ public class ArtificialNeuralNetwork
             outputs.Clear();
 
             // Loop through all neurons in the current layer.
-            for (var currentNeuron = 0; currentNeuron < layers[currentLayer].NeuronsCount; currentNeuron++) //TODO: replace j with currentNeuron?
+            for (var j = 0; j < layers[i].NeuronsCount; j++)
             {
                 double dotProduct = 0;
-                layers[currentLayer].Neurons[currentNeuron].Inputs.Clear();
+                layers[i].Neurons[j].Inputs.Clear();
 
                 // Loop through all inputs of the current neuron.
-                for (var currentInput = 0; currentInput < layers[currentLayer].Neurons[currentNeuron].InputsCount; currentInput++) //TODO: replace k with currentInput?
+                for (var k = 0; k < layers[i].Neurons[j].InputsCount; k++)
                 {
                     // For each neuron's input, add in the input from the one before. 
-                    layers[currentLayer].Neurons[currentNeuron].Inputs.Add(inputs[currentInput]);
+                    layers[i].Neurons[j].Inputs.Add(inputs[k]);
 
                     // Dotproduct.
-                    dotProduct += layers[currentLayer].Neurons[currentNeuron].Weights[currentInput] * inputs[currentInput];
+                    dotProduct += layers[i].Neurons[j].Weights[k] * inputs[k];
                 }
 
-                dotProduct -= layers[currentLayer].Neurons[currentNeuron].Bias;
+                dotProduct -= layers[i].Neurons[j].Bias;
 
-                if (currentLayer == hiddenLayersCount)
+                // The current layer is the output layer.
+                if (i == hiddenLayersCount)
                 {
-                    // The current layer is the output layer.
-                    layers[currentLayer].Neurons[currentNeuron].Output = ActivationFunctionOutputLayers(dotProduct);
-
+                    layers[i].Neurons[j].Output = ActivationFunctionOutputLayer(dotProduct);
                 }
                 else
                 {
-                    layers[currentLayer].Neurons[currentNeuron].Output = ActivationFunctionHiddenLayers(dotProduct);
+                    layers[i].Neurons[j].Output = ActivationFunctionHiddenLayers(dotProduct);
                 }
                 // Serves as the input for the next layer.
-                outputs.Add(layers[currentLayer].Neurons[currentNeuron].Output);
+                outputs.Add(layers[i].Neurons[j].Output);
             }
         }
         UpdateWeights(outputs, desiredOutputs);
@@ -187,13 +172,14 @@ public class ArtificialNeuralNetwork
     // en.wikipedia.org/wiki/Activation_function
     private double ActivationFunctionHiddenLayers (double value)
     {
+        // TODO: XOR Works with sigmoid in both places, but NOT with ReLu in hiddenlayer. >> ReLu might be the problem?
         return ReLu(value);
     }
 
     // A separate activation function used by the output layer.
-    private double ActivationFunctionOutputLayers (double value)
+    private double ActivationFunctionOutputLayer (double value)
     {
-        return ReLu(value);
+        return Sigmoid(value);
     }
 
     #region ACTIVATION FUNCTIONS
