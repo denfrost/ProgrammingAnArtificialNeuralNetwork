@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: Decide between using i, j, k and more meaningful variables
+// in nested for loops of Go() and UpdateWeights().
 public class ArtificialNeuralNetwork 
 {
     private readonly int inputsCount;
@@ -101,7 +103,17 @@ public class ArtificialNeuralNetwork
                 }
 
                 dotProduct -= layers[currentLayer].Neurons[currentNeuron].Bias;
-                layers[currentLayer].Neurons[currentNeuron].Output = ActivationFunction(dotProduct);
+
+                if (currentLayer == hiddenLayersCount)
+                {
+                    // The current layer is the output layer.
+                    layers[currentLayer].Neurons[currentNeuron].Output = ActivationFunctionOutputLayers(dotProduct);
+
+                }
+                else
+                {
+                    layers[currentLayer].Neurons[currentNeuron].Output = ActivationFunctionHiddenLayers(dotProduct);
+                }
                 // Serves as the input for the next layer.
                 outputs.Add(layers[currentLayer].Neurons[currentNeuron].Output);
             }
@@ -173,16 +185,23 @@ public class ArtificialNeuralNetwork
     // A container, which calls the actual activation function used.
     // For a full list of activation functions, see
     // en.wikipedia.org/wiki/Activation_function
-    private double ActivationFunction (double dotProduct)
+    private double ActivationFunctionHiddenLayers (double value)
     {
-        // Pass the call to the desired activation function.
-        return Sigmoid(dotProduct);
+        return ReLu(value);
     }
 
-    // Activation function "Step" (aka. binary step).
-    double Step (double dotProduct)
+    // A separate activation function used by the output layer.
+    private double ActivationFunctionOutputLayers (double value)
     {
-        if (dotProduct < 0)
+        return ReLu(value);
+    }
+
+    #region ACTIVATION FUNCTIONS
+    // Aka. binary step.
+    // Output values: 0 OR 1.
+    private double Step (double value)
+    {
+        if (value < 0)
         {
             return 0;
         }
@@ -192,10 +211,43 @@ public class ArtificialNeuralNetwork
         }
     }
 
-    // Activation function "Sigmoid" (aka. logistic softstep).
-    double Sigmoid (double dotProduct)
+    // Aka. logistic softstep.
+    // Output values: Between 0 and 1.
+    private double Sigmoid (double value)
     {
-        double k = System.Math.Exp(dotProduct);
+        double k = System.Math.Exp(value);
         return k / (1f + k);
     }
+
+    // Output values: Between -1 and 1.
+    private double TanH (double value)
+    {
+        return (2 * (Sigmoid(2 * value)) - 1);
+    } 
+
+    // Output values: 0 OR (positive) value.
+    private double ReLu (double value)
+    {
+        if (value > 0)
+        {
+            return value;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    private double LeakyRelu (double value)
+    {
+        if (value < 0)
+        {
+            return 0.01 * value;
+        }
+        else
+        {
+            return value;
+        }
+    }
+    #endregion
 }
